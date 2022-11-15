@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_spk_pemilihan_tabungan/pages/recomendation/recomendation_page.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative/alternative_page.dart';
 
 class SiteLayout extends StatelessWidget {
   const SiteLayout({super.key});
@@ -41,7 +41,7 @@ class SiteLayout extends StatelessWidget {
           ],
         ),
       ),
-      body: const RecomendationPage(),
+      body: const AlternativePage(),
     );
   }
 }

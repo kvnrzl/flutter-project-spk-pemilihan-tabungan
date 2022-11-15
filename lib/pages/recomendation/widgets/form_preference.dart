@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_spk_pemilihan_tabungan/services/user.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/services/user_services.dart';
 
-import '../../../models/result.dart';
-import '../../../models/tabungan.dart';
+import '../../../models/input_recomendation.dart';
 
 class FormPreference extends StatefulWidget {
   const FormPreference({super.key});
@@ -28,8 +27,6 @@ class FormPreferenceState extends State<FormPreference> {
   final kupDewasaController = TextEditingController();
   final kupRemajaController = TextEditingController();
   final kupAnakController = TextEditingController();
-
-  Result? result;
 
   @override
   void dispose() {
@@ -131,7 +128,7 @@ class FormPreferenceState extends State<FormPreference> {
                     anak: int.tryParse(kupAnakController.text) ?? 0,
                   );
 
-                  Tabungan tabungan = Tabungan(
+                  InputRecomendation inputRecomendation = InputRecomendation(
                     setoranAwal: int.tryParse(setoranAwalController.text) ?? 0,
                     setoranLanjutanMinimal:
                         int.tryParse(setoranLanjutanController.text) ?? 0,
@@ -145,12 +142,19 @@ class FormPreferenceState extends State<FormPreference> {
                     kategoriUmurPengguna: kategoriUmurPengguna,
                   );
 
-                  result = await UserServices.hitungResult(tabungan: tabungan);
+                  await UserServices.hitungResult(
+                          inputRecomendation: inputRecomendation)
+                      .then((value) {
+                    // debugPrint("Ini hasilnya ${value.toJson()}");
+                    return Navigator.pushNamed(context, '/result',
+                        arguments: value);
+                  });
 
-                  if (result != null) {
-                    debugPrint("RESULT : ${result!.toJson()}");
-                    // Navigator.pushNamed(context, '/result', arguments: result);
-                  }
+                  // if (result != null) {
+                  //   debugPrint("RESULT : ${result!.toJson()}");
+                  //   Navigator.pushNamed(context, '/result', arguments: result);
+                  //   // Navigator.pushNamed(context, '/result', arguments: result);
+                  // }
                 }
               },
               child: const Text('Submit'),
@@ -174,11 +178,12 @@ class TextFormFieldPreference extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       margin: const EdgeInsets.only(bottom: 10, top: 5),
-      height: 36,
-      width: MediaQuery.of(context).size.width / 2,
+      // height: size.height / 8,
+      width: size.width,
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(

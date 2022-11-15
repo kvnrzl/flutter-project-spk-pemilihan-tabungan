@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/layout.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative/alternative_page.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/pages/home/home_page.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/pages/recomendation/recomendation_page.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/pages/recomendation/result_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +21,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SiteLayout(),
+      routes: {
+        '/': (context) => const SiteLayout(),
+        '/home': (context) => const HomePage(),
+        'alternative': (context) => const AlternativePage(),
+        '/recomendation': (context) => const RecomendationPage(),
+        '/result': (context) => const ResultPage(),
+      },
+      // home: '/',
+      initialRoute: '/',
     );
   }
 }
