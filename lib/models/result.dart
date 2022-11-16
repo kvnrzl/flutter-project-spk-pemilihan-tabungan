@@ -28,18 +28,21 @@ class Result {
 }
 
 class Data {
+  int? id;
   String? namaTabungan;
   double? skor;
 
-  Data({this.namaTabungan, this.skor});
+  Data({this.id, this.namaTabungan, this.skor});
 
   Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     namaTabungan = json['nama_tabungan'];
     skor = json['skor'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['nama_tabungan'] = namaTabungan;
     data['skor'] = skor;
     return data;

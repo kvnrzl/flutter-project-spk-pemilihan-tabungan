@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_spk_pemilihan_tabungan/services/user_services.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/services/recomendation_services.dart';
 
 import '../../../models/input_recomendation.dart';
+import '../../result/result_page.dart';
+import 'form_preference_item.dart';
 
 class FormPreference extends StatefulWidget {
   const FormPreference({super.key});
@@ -52,55 +54,55 @@ class FormPreferenceState extends State<FormPreference> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: setoranAwalController,
             label: "Setoran Awal",
           ),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: setoranLanjutanController,
             label: "Setoran Lanjutan Minimal",
           ),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: saldoMinimumController,
             label: "Saldo Minimum",
           ),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: sukuBungaController,
             label: "Suku Bunga",
           ),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: biayaAdminController,
             label: "Biaya Admin",
           ),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: biayaPenarikanController,
             label: "Biaya Penarikan Habis",
           ),
           const SizedBox(height: 10),
           const Text("Fungsionalitas"),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: fungsiBisnisController,
             label: "Bisnis",
           ),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: fungsiInvestasiController,
             label: "Investasi",
           ),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: fungsiTransaksionalController,
             label: "Transaksional",
           ),
           const SizedBox(height: 10),
           const Text("Kategori Umur Pengguna"),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: kupDewasaController,
             label: "Dewasa",
           ),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: kupRemajaController,
             label: "Remaja",
           ),
-          TextFormFieldPreference(
+          FormPreferenceItem(
             controller: kupAnakController,
             label: "Anak-anak",
           ),
@@ -142,12 +144,19 @@ class FormPreferenceState extends State<FormPreference> {
                     kategoriUmurPengguna: kategoriUmurPengguna,
                   );
 
-                  await UserServices.hitungResult(
+                  await RecomendationServices.hitungResult(
                           inputRecomendation: inputRecomendation)
                       .then((value) {
-                    // debugPrint("Ini hasilnya ${value.toJson()}");
-                    return Navigator.pushNamed(context, '/result',
-                        arguments: value);
+                    return Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultPage(
+                          result: value,
+                        ),
+                      ),
+                    );
+                    // return Navigator.pushNamed(context, '/result',
+                    //     arguments: value);
                   });
 
                   // if (result != null) {
@@ -161,56 +170,6 @@ class FormPreferenceState extends State<FormPreference> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class TextFormFieldPreference extends StatelessWidget {
-  final TextEditingController controller;
-  final String label;
-
-  const TextFormFieldPreference({
-    Key? key,
-    required this.controller,
-    required this.label,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      margin: const EdgeInsets.only(bottom: 10, top: 5),
-      // height: size.height / 8,
-      width: size.width,
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          label: Text(label),
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-          ),
-          hintText: label == "Bisnis"
-              ? "1 - 5"
-              : label == "Investasi"
-                  ? "1 - 5"
-                  : label == "Transaksional"
-                      ? "1 - 5"
-                      : label == "Dewasa"
-                          ? "1 - 5"
-                          : label == "Remaja"
-                              ? "1 - 5"
-                              : label == "Anak-anak"
-                                  ? "1 - 5"
-                                  : label,
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter some text';
-          }
-          return null;
-        },
       ),
     );
   }

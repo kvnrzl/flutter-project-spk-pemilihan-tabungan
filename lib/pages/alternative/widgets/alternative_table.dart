@@ -1,9 +1,9 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_project_spk_pemilihan_tabungan/services/user_services.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/services/alternative_services.dart';
 
 import '../../../models/tabungan.dart';
-import '../alternative_detail_page.dart';
+import '../../alternative_detail/alternative_detail_page.dart';
 
 /// Example without a datasource
 class AlternativeTable extends StatelessWidget {
@@ -39,7 +39,8 @@ class AlternativeTable extends StatelessWidget {
                     DataCell(Text("${data[index]["nama_tabungan"]}")),
                     DataCell(ElevatedButton(
                         onPressed: () async {
-                          await UserServices.getTabunganById(data[index]["id"])
+                          await AlternativeServices.getTabunganById(
+                                  data[index]["id"])
                               .then((value) {
                             Navigator.push(
                                 context,
