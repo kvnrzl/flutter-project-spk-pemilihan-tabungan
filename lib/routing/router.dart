@@ -8,13 +8,13 @@ import '../pages/recomendation/recomendation_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
-    case homePage:
+    case homePageRoute:
       return _getPageRoute(const HomePage());
-    case alternativePage:
+    case alternativePageRoute:
       return _getPageRoute(const AlternativePage());
-    case recomendationPage:
+    case recomendationPageRoute:
       return _getPageRoute(const RecomendationPage());
-    case presetPage:
+    case presetPageRoute:
       return _getPageRoute(const PresetPage());
     default:
       return MaterialPageRoute(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/constants/style.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/controllers/auth_controller.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/layout.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative/alternative_page.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/home/home_page.dart';
@@ -13,6 +14,7 @@ import 'controllers/navigation_controller.dart';
 void main() {
   Get.put(MenuController());
   Get.put(NavigationController());
+  Get.put(AuthController());
   runApp(const MyApp());
 }
 

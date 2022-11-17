@@ -6,6 +6,6 @@ import '../routing/routes.dart';
 
 Navigator localNavigator() => Navigator(
       key: navigationController.navigationKey,
-      initialRoute: homePage,
+      initialRoute: homePageRoute,
       onGenerateRoute: generateRoute,
     );
