@@ -105,14 +105,18 @@ abstract class AlternativeServices {
     }
   }
 
-  static Future<Tabungan> deleteTabungan({
+  static Future<void> deleteTabungan({
     required int id,
   }) async {
     try {
       final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      // debugPrint("ISI STATUS CODE : ${response.statusCode}");
+      debugPrint("TEST123");
       var response = await dio.delete("/api/tabungan/detail/$id/delete");
+      debugPrint("TEST321");
       if (response.statusCode == 200) {
-        return Tabungan.fromJson(response.data);
+        // return Tabungan.fromJson(response.data)
+        return;
       } else {
         throw Exception('Failed to load data');
       }

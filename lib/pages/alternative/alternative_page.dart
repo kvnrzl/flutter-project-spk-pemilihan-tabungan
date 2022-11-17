@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative/widgets/alternative_table.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative_add/alternative_add_page.dart';
 
 import '../../models/tabungan.dart';
 import '../../services/alternative_services.dart';
@@ -29,7 +30,24 @@ class _AlternativePageState extends State<AlternativePage> {
   Widget build(BuildContext context) {
     // return AlternativeTable(tabungans: tabungans!);
     return tabungans != null
-        ? AlternativeTable(tabungans: tabungans!)
-        : const Center(child: Text("NO DATA"));
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AlternativeAddPage(),
+                      ));
+                },
+                child: const Text("Tambah Tabungan"),
+              ),
+              Expanded(
+                child: AlternativeTable(tabungans: tabungans!),
+              ),
+            ],
+          )
+        : const Center(child: Text("TIDAK ADA DAFTAR ALTERNATIF"));
   }
 }

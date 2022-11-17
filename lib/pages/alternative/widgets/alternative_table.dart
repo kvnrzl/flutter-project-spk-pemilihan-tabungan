@@ -1,6 +1,10 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/helpers/local_navigator.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative_edit/alternative_edit_page.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/pages/success/edit_success.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/services/alternative_services.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/widgets/custom_text.dart';
 
 import '../../../models/tabungan.dart';
 import '../../alternative_detail/alternative_detail_page.dart';
@@ -29,32 +33,109 @@ class AlternativeTable extends StatelessWidget {
               label: Text("Nama Tabungan"),
             ),
             DataColumn(
-              label: Text("Action"),
+              label: Center(child: Text("Action")),
             ),
           ],
           rows: List<DataRow>.generate(
-              10,
+              tabungans.data!.length,
               (index) => DataRow(cells: [
                     DataCell(Text("${index + 1}")),
                     DataCell(Text("${data[index]["nama_tabungan"]}")),
-                    DataCell(ElevatedButton(
-                        onPressed: () async {
-                          await AlternativeServices.getTabunganById(
-                                  data[index]["id"])
-                              .then((value) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AlternativeDetailPage(
-                                        tabungan: value)));
-                          });
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             AlternativeDetailPage(id: index)));
-                        },
-                        child: const Text("Detail"))),
+                    DataCell(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        // mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              await AlternativeServices.getTabunganById(
+                                      data[index]["id"])
+                                  .then((value) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AlternativeDetailPage(
+                                                tabungan: value)));
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.screen_search_desktop_outlined,
+                              size: 26,
+                            ),
+                            tooltip: "Detail",
+                          ),
+                          IconButton(
+                            onPressed: () async {
+                              await AlternativeServices.getTabunganById(
+                                      data[index]["id"])
+                                  .then((value) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AlternativeEditPage(
+                                                tabungan: value)));
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.blue,
+                            ),
+                            tooltip: "Edit",
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.do_not_disturb_on_outlined,
+                              color: Colors.red,
+                            ),
+                            tooltip: "Delete",
+                            onPressed: () => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const CustomText(
+                                  text: "Warning!",
+                                  weight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                                content: const Text(
+                                  'Are you sure want to delete this?',
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(
+                                      context,
+                                      'Cancel',
+                                    ),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await AlternativeServices.deleteTabungan(
+                                              id: data[index]["id"])
+                                          .then((_) =>
+                                                  Navigator.pop(context, 'OK')
+                                              //     Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) => const SuccessPage(
+                                              //         message:
+                                              //             "Berhasil menghapus data alternatif tabungan"),
+                                              //   ),
+                                              // ),
+                                              );
+                                    },
+                                    child: const Text(
+                                      'OK',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ]))),
     );
   }
