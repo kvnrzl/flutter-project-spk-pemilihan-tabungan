@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../constants/controller.dart';
 import '../../constants/style.dart';
+import '../../routing/routes.dart';
+import '../../services/auth_services.dart';
 import '../../widgets/custom_text.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _formLoginKey = GlobalKey<FormState>();
+  TextEditingController _username = TextEditingController();
+  TextEditingController _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,71 +63,133 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              TextField(
-                decoration: InputDecoration(
-                    labelText: "Email",
-                    hintText: "abc@domain.com",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20))),
+              Form(
+                key: _formLoginKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _username,
+                      decoration: InputDecoration(
+                        labelText: "Username",
+                        hintText: "Enter username",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Username cannot be empty";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      controller: _password,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        hintText: "Enter password",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Password cannot be empty";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        if (_formLoginKey.currentState!.validate()) {
+                          await AuthServices.login(
+                                  _username.text, _password.text)
+                              .then((value) {
+                            if (value.code == 200) {
+                              authController.login();
+                              authController.setUsername =
+                                  value.data!.username ?? "Log In";
+                              Get.offAllNamed(rootRoute);
+                            } else {
+                              Get.snackbar(
+                                  "Error",
+                                  value.message ??
+                                      "Username atau Password salah",
+                                  snackPosition: SnackPosition.BOTTOM);
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   SnackBar(
+                              //     content: Text('Error : Username atau Password Salah'),
+                              //   ),
+                              // );
+                            }
+                          });
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: active,
+                            borderRadius: BorderRadius.circular(20)),
+                        alignment: Alignment.center,
+                        width: double.maxFinite,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: const CustomText(
+                          text: "Login",
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                    labelText: "Password",
-                    hintText: "123",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20))),
-              ),
+
+              // const SizedBox(
+              //   height: 15,
+              // ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Row(
+              //       children: [
+              //         Checkbox(value: true, onChanged: (value) {}),
+              //         const CustomText(
+              //           text: "Remeber Me",
+              //         ),
+              //       ],
+              //     ),
+              //     CustomText(text: "Forgot password?", color: active)
+              //   ],
+              // ),
+
               const SizedBox(
                 height: 15,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      Checkbox(value: true, onChanged: (value) {}),
-                      const CustomText(
-                        text: "Remeber Me",
-                      ),
-                    ],
+                  const CustomText(
+                    text: "Don't have an account?",
+                    size: 14,
                   ),
-                  CustomText(text: "Forgot password?", color: active)
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.offAllNamed(rootRoute);
+                    },
+                    child: CustomText(
+                      text: "Enter as a Guest",
+                      color: active,
+                      size: 14,
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              InkWell(
-                onTap: () {
-                  // Get.offAllNamed(rootRoute);
-                  /// TODO : create some logic when click login
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: active, borderRadius: BorderRadius.circular(20)),
-                  alignment: Alignment.center,
-                  width: double.maxFinite,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: const CustomText(
-                    text: "Login",
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              RichText(
-                  text: TextSpan(children: [
-                const TextSpan(text: "Do not have admin credentials? "),
-                TextSpan(
-                    text: "Request Credentials! ",
-                    style: TextStyle(color: active))
-              ]))
             ],
           ),
         ),

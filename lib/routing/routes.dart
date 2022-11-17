@@ -1,3 +1,6 @@
+const rootRoute = "/";
+const loginRoute = "/login";
+
 const homePageDisplayName = "Beranda";
 const homePageRoute = "/home";
 

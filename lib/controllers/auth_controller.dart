@@ -4,7 +4,7 @@ class AuthController extends GetxController {
   static AuthController instance = Get.find();
 
   final _isAuthenticated = false.obs;
-  final _username = "".obs;
+  final _username = "Log In".obs;
 
   bool get isAuthenticated => _isAuthenticated.value;
   set isAuthenticated(bool value) => _isAuthenticated.value = value;
@@ -17,7 +17,7 @@ class AuthController extends GetxController {
   //   super.onInit();
   //   ever(_isAuthenticated, (_) {
   //     if (isAuthenticated) {
-  //       Get.offAllNamed('/home');
+  //       Get.offAllNamed('/');
   //     } else {
   //       Get.offAllNamed('/login');
   //     }
@@ -30,5 +30,6 @@ class AuthController extends GetxController {
 
   void logout() {
     isAuthenticated = false;
+    setUsername = "Log In";
   }
 }
