@@ -5,8 +5,39 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Home Page'),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Align(
+          alignment: Alignment.center,
+          child: Text(
+            "Sistem Pendukung Keputusan\nProduk Tabungan Bank BTN",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          ),
+        ),
+        const SizedBox(height: 30),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 150),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  "SPK ini dapat digunakan untuk membantu calon nasabah dalam pemilihan jenis produk tabungan yang sesuai dengan kebutuhan dan preferensi.\nMetode yang digunakan adalah kombinasi dari metode Profile Matching (PM) dan Simple Additive Weighting (SAW).",
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "Manfaat:\n\t1. Bagi calon nasabah, dapat menentukan jenis tabungan yang dipilih sesuai dengan kebutuhan dan preferensi.\n\t2. Bagi bank, dapat meyakinkan calon nasabah dalam memberikan rekomendasi jenis produk tabungan dan mengurangi potensi rekening tabungan pasif (dormant).",
+                  style: TextStyle(fontSize: 18),
+                ),
+                // SizedBox(height: 30),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

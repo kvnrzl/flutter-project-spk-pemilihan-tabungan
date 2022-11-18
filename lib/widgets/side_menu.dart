@@ -32,7 +32,7 @@ class SideMenu extends StatelessWidget {
                     SizedBox(width: width / 48),
                     Padding(
                       padding: const EdgeInsets.only(right: 12),
-                      child: Image.asset("assets/icons/logo.png"),
+                      child: Image.asset(logoPath),
                     ),
                     Flexible(
                       child: CustomText(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_spk_pemilihan_tabungan/services/recomendation_services.dart';
 
 import '../../../models/input_recomendation.dart';
-import '../../result/result_page.dart';
+import '../../preset/preset_page.dart';
 import 'form_preference_item.dart';
 
 class FormPreference extends StatefulWidget {
@@ -83,28 +82,34 @@ class FormPreferenceState extends State<FormPreference> {
           FormPreferenceItem(
             controller: fungsiBisnisController,
             label: "Bisnis",
+            hint: "1 - 5",
           ),
           FormPreferenceItem(
             controller: fungsiInvestasiController,
             label: "Investasi",
+            hint: "1 - 5",
           ),
           FormPreferenceItem(
             controller: fungsiTransaksionalController,
             label: "Transaksional",
+            hint: "1 - 5",
           ),
           const SizedBox(height: 10),
           const Text("Kategori Umur Pengguna"),
           FormPreferenceItem(
             controller: kupDewasaController,
             label: "Dewasa",
+            hint: "1 - 5",
           ),
           FormPreferenceItem(
             controller: kupRemajaController,
             label: "Remaja",
+            hint: "1 - 5",
           ),
           FormPreferenceItem(
             controller: kupAnakController,
             label: "Anak-anak",
+            hint: "1 - 5",
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -130,7 +135,7 @@ class FormPreferenceState extends State<FormPreference> {
                     anak: int.tryParse(kupAnakController.text) ?? 0,
                   );
 
-                  InputRecomendation inputRecomendation = InputRecomendation(
+                  NilaiIdeal nilaiIdeal = NilaiIdeal(
                     setoranAwal: int.tryParse(setoranAwalController.text) ?? 0,
                     setoranLanjutanMinimal:
                         int.tryParse(setoranLanjutanController.text) ?? 0,
@@ -144,26 +149,31 @@ class FormPreferenceState extends State<FormPreference> {
                     kategoriUmurPengguna: kategoriUmurPengguna,
                   );
 
-                  await RecomendationServices.hitungResult(
-                          inputRecomendation: inputRecomendation)
-                      .then((value) {
-                    return Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResultPage(
-                          result: value,
-                        ),
-                      ),
-                    );
-                    // return Navigator.pushNamed(context, '/result',
-                    //     arguments: value);
-                  });
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PresetPage(isPreset: false, nilaiIdeal: nilaiIdeal),
+                    ),
+                  );
 
-                  // if (result != null) {
-                  //   debugPrint("RESULT : ${result!.toJson()}");
-                  //   Navigator.pushNamed(context, '/result', arguments: result);
-                  //   // Navigator.pushNamed(context, '/result', arguments: result);
-                  // }
+                  // InputRecomendation inputRecomendation = InputRecomendation(
+                  //   nilaiIdeal: ,
+
+                  // );
+
+                  // await RecomendationServices.hitungResult(
+                  //         inputRecomendation: inputRecomendation)
+                  //     .then((value) {
+                  //   return Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => ResultPage(
+                  //         result: value,
+                  //       ),
+                  //     ),
+                  //   );
+                  // });
                 }
               },
               child: const Text('Submit'),

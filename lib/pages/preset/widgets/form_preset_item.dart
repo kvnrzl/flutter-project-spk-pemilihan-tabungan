@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class FormPreferenceItem extends StatelessWidget {
+class FormPresetItem extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final String? hint;
 
-  const FormPreferenceItem({
+  const FormPresetItem({
     Key? key,
     required this.controller,
     required this.label,

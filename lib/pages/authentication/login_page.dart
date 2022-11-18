@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 12),
-                    child: Image.asset("assets/icons/logo.png"),
+                    child: Image.asset(logoPath),
                   ),
                   Expanded(child: Container()),
                 ],
@@ -108,24 +108,25 @@ class _LoginPageState extends State<LoginPage> {
                       onTap: () async {
                         if (_formLoginKey.currentState!.validate()) {
                           await AuthServices.login(
-                                  _username.text, _password.text)
-                              .then((value) {
+                            _username.text,
+                            _password.text,
+                          ).then((value) {
                             if (value.code == 200) {
                               authController.login();
                               authController.setUsername =
                                   value.data!.username ?? "Log In";
                               Get.offAllNamed(rootRoute);
                             } else {
-                              Get.snackbar(
-                                  "Error",
-                                  value.message ??
-                                      "Username atau Password salah",
-                                  snackPosition: SnackPosition.BOTTOM);
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   SnackBar(
-                              //     content: Text('Error : Username atau Password Salah'),
-                              //   ),
-                              // );
+                              // Get.snackbar(
+                              //     "Error",
+                              //     value.message ??
+                              //         "Username atau Password salah",
+                              //     snackPosition: SnackPosition.BOTTOM);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Error : Username atau Password Salah')),
+                              );
                             }
                           });
                         }

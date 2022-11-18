@@ -1,8 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_project_spk_pemilihan_tabungan/helpers/local_navigator.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative_edit/alternative_edit_page.dart';
-import 'package:flutter_project_spk_pemilihan_tabungan/pages/success/edit_success.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/services/alternative_services.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/widgets/custom_text.dart';
 

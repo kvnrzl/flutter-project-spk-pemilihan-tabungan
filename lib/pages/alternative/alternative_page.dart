@@ -31,17 +31,31 @@ class _AlternativePageState extends State<AlternativePage> {
     // return AlternativeTable(tabungans: tabungans!);
     return tabungans != null
         ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AlternativeAddPage(),
-                      ));
-                },
-                child: const Text("Tambah Tabungan"),
+              const Text(
+                "Daftar Alternatif Tabungan",
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                  "Hanya admin yang dapat menambah, mengubah, dan menghapus daftar alternatif"),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(right: 50),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AlternativeAddPage(),
+                          ));
+                    },
+                    child: const Text("Tambah Alternatif"),
+                  ),
+                ),
               ),
               Expanded(
                 child: AlternativeTable(tabungans: tabungans!),
