@@ -7,15 +7,15 @@ import 'package:flutter_project_spk_pemilihan_tabungan/widgets/top_nav_bar.dart'
 import 'widgets/small_screen.dart';
 
 class SiteLayout extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   SiteLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
-      appBar: topNavigationBar(context, scaffoldKey),
+      key: _scaffoldKey,
+      appBar: topNavigationBar(context, _scaffoldKey),
       drawer: const Drawer(
         child: SideMenu(),
       ),

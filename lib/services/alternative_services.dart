@@ -1,3 +1,5 @@
+import 'package:dio/adapter_browser.dart';
+import 'package:dio/browser_imp.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +8,29 @@ import '../models/tabungan.dart';
 abstract class AlternativeServices {
   static Future<ListTabungan> getAllTabungan() async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      final dio = Dio(BaseOptions(
+        baseUrl: "http://localhost:8080",
+        connectTimeout: 15000,
+        receiveTimeout: 13000,
+        headers: {
+          "Accept": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Methods":
+              "POST,HEAD,PATCH, OPTIONS, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "*",
+        },
+      ));
+      // dio.interceptors.add(InterceptorsWrapper(
+      //   onRequest: (options, handler) async {
+      //     // debugPrint("OPTIONS : ${options.extra["withCredentials"]}");
+      //     // debugPrint("OPTIONS : ${options.extra["set-cookie"]}");
+      //     // debugPrint("OPTIONS : ${options.headers["set-cookie"]}");
+      //     options.headers["set-cookie"] = "ABC";
+      //     return handler.next(options);
+      //   },
+      // ));
+      dio.options.headers["set-cookie"] = "ABC";
       var response = await dio.get("/api/tabungan/list");
       if (response.statusCode == 200) {
         return ListTabungan.fromJson(response.data);
@@ -47,6 +71,9 @@ abstract class AlternativeServices {
   }) async {
     try {
       final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      // var adapter = BrowserHttpClientAdapter()..withCredentials = true;
+      // dio.httpClientAdapter = adapter;
+
       var response = await dio.post("/api/tabungan/create", data: {
         "nama_tabungan": namaTabungan,
         "setoran_awal": setoranAwal,
@@ -105,12 +132,12 @@ abstract class AlternativeServices {
     }
   }
 
-  static Future<void> deleteTabungan({
-    required int id,
-  }) async {
+  static Future<void> deleteTabungan({required int id}) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
-      // debugPrint("ISI STATUS CODE : ${response.statusCode}");
+      final dio = DioForBrowser(BaseOptions(baseUrl: "http://localhost:8080"));
+      var adapter = BrowserHttpClientAdapter();
+      adapter.withCredentials = true;
+      dio.httpClientAdapter = adapter;
       debugPrint("TEST123");
       var response = await dio.delete("/api/tabungan/detail/$id/delete");
       debugPrint("TEST321");

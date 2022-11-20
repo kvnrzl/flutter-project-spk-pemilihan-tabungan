@@ -34,7 +34,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
             Visibility(
               visible: !ResponsiveWidget.isSmallScreen(context),
               child: CustomText(
-                text: "Dash",
+                text: "SPK TABUNGAN",
                 color: lightGrey,
                 size: 20,
                 weight: FontWeight.bold,
