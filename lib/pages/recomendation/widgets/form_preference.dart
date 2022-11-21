@@ -153,24 +153,6 @@ class FormPreferenceState extends State<FormPreference> {
                           PresetPage(isPreset: false, nilaiIdeal: nilaiIdeal),
                     ),
                   );
-
-                  // InputRecomendation inputRecomendation = InputRecomendation(
-                  //   nilaiIdeal: ,
-
-                  // );
-
-                  // await RecomendationServices.hitungResult(
-                  //         inputRecomendation: inputRecomendation)
-                  //     .then((value) {
-                  //   return Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => ResultPage(
-                  //         result: value,
-                  //       ),
-                  //     ),
-                  //   );
-                  // });
                 }
               },
               child: const Text('Submit'),

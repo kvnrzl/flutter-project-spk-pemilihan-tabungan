@@ -50,15 +50,20 @@ class _AlternativePageState extends State<AlternativePage> {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () async {
-                  String value = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AlternativeAddPage(),
-                      ));
-                  debugPrint("INI ISI VALUE : $value");
-                  if (value == 'OK') {
-                    // await getListAllTabungan();
+                  if (!authController.isAuthenticated) {
+                    Get.snackbar("Error",
+                        "Anda tidak memiliki akses untuk menambah data",
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white);
+                    return;
                   }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AlternativeAddPage(),
+                    ),
+                  );
                 },
                 child: const Text("Tambah Alternatif"),
               ),

@@ -80,35 +80,26 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
             InkWell(
               onTap: () async {
                 if (authController.isAuthenticated) {
-                  showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const CustomText(
-                        text: "Warning!",
-                        weight: FontWeight.bold,
-                        color: Colors.red,
-                      ),
-                      content: const Text(
-                        'Do you want to logout?',
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(
-                            context,
-                            'Cancel',
-                          ),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            await authController.logout().then((_) {
-                              Navigator.pop(context);
-                            });
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
+                  Get.defaultDialog(
+                    title: "Konfirmasi",
+                    middleText: "Apakah anda yakin ingin logout?",
+                    textConfirm: "Ya",
+                    textCancel: "Tidak",
+                    confirmTextColor: Colors.white,
+                    cancelTextColor: Colors.blue,
+                    buttonColor: Colors.blue,
+                    onCancel: () {
+                      Get.back();
+                    },
+                    onConfirm: () async {
+                      await authController.logout().then((_) {
+                        Get.back();
+                        Get.snackbar("Success", "Anda berhasil logout",
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.green,
+                            colorText: Colors.white);
+                      });
+                    },
                   );
                 } else {
                   Get.offAllNamed(loginRoute);

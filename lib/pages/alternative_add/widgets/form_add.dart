@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/success/edit_success.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/services/alternative_services.dart';
+import 'package:get/get.dart';
 
+import '../../../constants/controller.dart';
 import 'drop_down_add_item.dart';
 import 'form_add_item.dart';
 
@@ -100,11 +102,15 @@ class _FormAddState extends State<FormAdd> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () async {
+                if (!authController.isAuthenticated) {
+                  Get.snackbar(
+                      "Error", "Anda tidak memiliki akses untuk menambah data",
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white);
+                  return;
+                }
                 if (_formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
-
                   await AlternativeServices.createTabungan(
                     namaTabungan: namaTabunganController.text,
                     setoranAwal: int.parse(setoranAwalController.text),

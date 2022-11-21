@@ -15,11 +15,11 @@ class AlternativeEditPage extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              "Ubah Nilai Tabungan ${tabungan.data!.namaTabungan}",
+              "Ubah Informasi Tabungan ${tabungan.data!.namaTabungan}",
               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            const Text("Masukkan nilai sesuai dengan informasi tabungan"),
+            const Text("Masukkan sesuai dengan informasi tabungan"),
             const SizedBox(height: 10),
             FormEdit(tabungan: tabungan),
           ],

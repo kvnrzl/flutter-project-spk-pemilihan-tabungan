@@ -84,6 +84,10 @@ class _FormPresetState extends State<FormPreset> {
     await RecomendationServices.hitungResult(
             inputRecomendation: inputRecomendation)
         .then((value) {
+      Get.snackbar("Success", "Rekomendasi berhasil dihitung",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white);
       return Navigator.push(
         context,
         MaterialPageRoute(
@@ -202,12 +206,7 @@ class _FormPresetState extends State<FormPreset> {
                     }
                     usedToSetBobot(presetKriteria);
                   } else {
-                    await usedToGetRecomendation(inputRecomendation).then((_) {
-                      Get.snackbar("Success", "Rekomendasi berhasil dihitung",
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.green,
-                          colorText: Colors.white);
-                    });
+                    usedToGetRecomendation(inputRecomendation);
                   }
                 }
               },
