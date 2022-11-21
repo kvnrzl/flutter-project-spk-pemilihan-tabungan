@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/pages/recomendation/widgets/drop_down_preference_item.dart';
 
 import '../../../models/input_recomendation.dart';
 import '../../preset/preset_page.dart';
@@ -79,37 +80,31 @@ class FormPreferenceState extends State<FormPreference> {
           ),
           const SizedBox(height: 10),
           const Text("Fungsionalitas"),
-          FormPreferenceItem(
+          DropDownPreferenceItem(
             controller: fungsiBisnisController,
             label: "Bisnis",
-            hint: "1 - 5",
           ),
-          FormPreferenceItem(
+          DropDownPreferenceItem(
             controller: fungsiInvestasiController,
             label: "Investasi",
-            hint: "1 - 5",
           ),
-          FormPreferenceItem(
+          DropDownPreferenceItem(
             controller: fungsiTransaksionalController,
             label: "Transaksional",
-            hint: "1 - 5",
           ),
           const SizedBox(height: 10),
           const Text("Kategori Umur Pengguna"),
-          FormPreferenceItem(
+          DropDownPreferenceItem(
             controller: kupDewasaController,
             label: "Dewasa",
-            hint: "1 - 5",
           ),
-          FormPreferenceItem(
+          DropDownPreferenceItem(
             controller: kupRemajaController,
             label: "Remaja",
-            hint: "1 - 5",
           ),
-          FormPreferenceItem(
+          DropDownPreferenceItem(
             controller: kupAnakController,
             label: "Anak-anak",
-            hint: "1 - 5",
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -148,6 +143,8 @@ class FormPreferenceState extends State<FormPreference> {
                     fungsionalitas: fungsionalitas,
                     kategoriUmurPengguna: kategoriUmurPengguna,
                   );
+
+                  debugPrint(nilaiIdeal.toJson().toString());
 
                   Navigator.push(
                     context,

@@ -192,17 +192,22 @@ class _FormPresetState extends State<FormPreset> {
                   );
 
                   if (widget.isPreset) {
-                    if (authController.isAuthenticated) {
-                      usedToSetBobot(presetKriteria);
-                    } else {
+                    if (!authController.isAuthenticated) {
                       Get.snackbar("Error",
                           "Anda tidak memiliki akses untuk mengubah preset bobot kriteria",
                           snackPosition: SnackPosition.BOTTOM,
                           backgroundColor: Colors.red,
                           colorText: Colors.white);
+                      return;
                     }
+                    usedToSetBobot(presetKriteria);
                   } else {
-                    await usedToGetRecomendation(inputRecomendation);
+                    await usedToGetRecomendation(inputRecomendation).then((_) {
+                      Get.snackbar("Success", "Rekomendasi berhasil dihitung",
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.green,
+                          colorText: Colors.white);
+                    });
                   }
                 }
               },
