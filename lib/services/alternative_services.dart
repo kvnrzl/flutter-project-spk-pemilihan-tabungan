@@ -1,5 +1,3 @@
-import 'package:dio/adapter_browser.dart';
-import 'package:dio/browser_imp.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -134,10 +132,10 @@ abstract class AlternativeServices {
 
   static Future<void> deleteTabungan({required int id}) async {
     try {
-      final dio = DioForBrowser(BaseOptions(baseUrl: "http://localhost:8080"));
-      var adapter = BrowserHttpClientAdapter();
-      adapter.withCredentials = true;
-      dio.httpClientAdapter = adapter;
+      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      // var adapter = BrowserHttpClientAdapter();
+      // adapter.withCredentials = true;
+      // dio.httpClientAdapter = adapter;
       debugPrint("TEST123");
       var response = await dio.delete("/api/tabungan/detail/$id/delete");
       debugPrint("TEST321");

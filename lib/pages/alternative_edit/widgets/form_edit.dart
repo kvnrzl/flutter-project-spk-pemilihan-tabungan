@@ -3,6 +3,7 @@ import 'package:flutter_project_spk_pemilihan_tabungan/pages/success/edit_succes
 import 'package:flutter_project_spk_pemilihan_tabungan/services/alternative_services.dart';
 
 import '../../../models/tabungan.dart';
+import 'drop_down_edit_item.dart';
 import 'form_edit_item.dart';
 
 class FormEdit extends StatefulWidget {
@@ -25,6 +26,18 @@ class _FormEditState extends State<FormEdit> {
   final biayaPenarikanController = TextEditingController();
   final fungsionalitasController = TextEditingController();
   final kupController = TextEditingController();
+
+  List<DropdownMenuItem> fungsionalitasMenu = const [
+    DropdownMenuItem(value: "BISNIS", child: Text("BISNIS")),
+    DropdownMenuItem(value: "INVESTASI", child: Text("INVESTASI")),
+    DropdownMenuItem(value: "TRANSAKSIONAL", child: Text("TRANSAKSIONAL")),
+  ];
+
+  List<DropdownMenuItem> kupMenu = const [
+    DropdownMenuItem(value: "DEWASA", child: Text("DEWASA")),
+    DropdownMenuItem(value: "REMAJA", child: Text("REMAJA")),
+    DropdownMenuItem(value: "ANAK-ANAK", child: Text("ANAK-ANAK")),
+  ];
 
   @override
   void initState() {
@@ -91,36 +104,16 @@ class _FormEditState extends State<FormEdit> {
             controller: biayaPenarikanController,
             label: "Biaya Penarikan Habis",
           ),
-          // const SizedBox(height: 10),
-          // const Text("Fungsionalitas"),
-          FormEditItem(
-            controller: fungsionalitasController,
+          DropDownEditItem(
             label: "Fungsionalitas",
-            hint: "Bisnis / Investasi / Transaksional",
+            items: fungsionalitasMenu,
+            itemValue: fungsionalitasController,
           ),
-          // FormEditItem(
-          //   controller: fungsiInvestasiController,
-          //   label: "Investasi",
-          // ),
-          // FormEditItem(
-          //   controller: fungsiTransaksionalController,
-          //   label: "Transaksional",
-          // ),
-          // const SizedBox(height: 10),
-          // const Text("Kategori Umur Pengguna"),
-          FormEditItem(
-            controller: kupController,
+          DropDownEditItem(
             label: "Kategori Umur Pengguna",
-            hint: "Dewasa / Remaja / Anak-anak",
+            items: kupMenu,
+            itemValue: kupController,
           ),
-          // FormEditItem(
-          //   controller: kupRemajaController,
-          //   label: "Remaja",
-          // ),
-          // FormEditItem(
-          //   controller: kupAnakController,
-          //   label: "Anak-anak",
-          // ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
@@ -129,35 +122,6 @@ class _FormEditState extends State<FormEdit> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Processing Data')),
                   );
-
-                  // Fungsionalitas fungsionalitas = Fungsionalitas(
-                  //   bisnis: int.tryParse(fungsiBisnisController.text) ?? 0,
-                  //   investasi:
-                  //       int.tryParse(fungsiInvestasiController.text) ?? 0,
-                  //   transaksional:
-                  //       int.tryParse(fungsiTransaksionalController.text) ?? 0,
-                  // );
-
-                  // KategoriUmurPengguna kategoriUmurPengguna =
-                  //     KategoriUmurPengguna(
-                  //   dewasa: int.tryParse(kupDewasaController.text) ?? 0,
-                  //   remaja: int.tryParse(kupRemajaController.text) ?? 0,
-                  //   anak: int.tryParse(kupAnakController.text) ?? 0,
-                  // );
-
-                  // InputRecomendation inputRecomendation = InputRecomendation(
-                  //   setoranAwal: int.tryParse(setoranAwalController.text) ?? 0,
-                  //   setoranLanjutanMinimal:
-                  //       int.tryParse(setoranLanjutanController.text) ?? 0,
-                  //   saldoMinimum:
-                  //       int.tryParse(saldoMinimumController.text) ?? 0,
-                  //   sukuBunga: double.tryParse(sukuBungaController.text) ?? 0,
-                  //   biayaAdmin: int.tryParse(biayaAdminController.text) ?? 0,
-                  //   biayaPenarikanHabis:
-                  //       int.tryParse(biayaPenarikanController.text) ?? 0,
-                  //   fungsionalitas: fungsionalitas,
-                  //   kategoriUmurPengguna: kategoriUmurPengguna,
-                  // );
 
                   await AlternativeServices.updateTabungan(
                     id: widget.tabungan.data!.id!,
@@ -181,12 +145,6 @@ class _FormEditState extends State<FormEdit> {
                       ),
                     );
                   });
-
-                  // if (result != null) {
-                  //   debugPrint("RESULT : ${result!.toJson()}");
-                  //   Navigator.pushNamed(context, '/result', arguments: result);
-                  //   // Navigator.pushNamed(context, '/result', arguments: result);
-                  // }
                 }
               },
               child: const Text('Submit'),

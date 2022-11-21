@@ -20,32 +20,6 @@ abstract class AuthServices {
         },
         // extra: {"withCredentials": true},
       ));
-      // dio.interceptors.add(InterceptorsWrapper(
-      //   onRequest: (options, handler) async {
-      //     debugPrint("OPTIONS : ${options.extra["withCredentials"]}");
-      //     debugPrint("OPTIONS : ${options.extra["set-cookie"]}");
-      //     debugPrint("OPTIONS : ${options.headers["set-cookie"]}");
-      //     return handler.next(options);
-      //   },
-      //   onResponse: (r, handler) async {
-      //     debugPrint("OPTIONS : ${r.extra["withCredentials"]}");
-      //     debugPrint("OPTIONS : ${r.extra["set-cookie"]}");
-      //     debugPrint("OPTIONS : ${r.headers["set-cookie"]}");
-      //     debugPrint("OPTIONS : ${r.headers.map["set-cookie"]}");
-      //     return handler.next(r);
-      //   },
-      // ));
-
-      // var client = BrowserHttpClientAdapter()..withCredentials = true;
-      // http.Response response;
-      // try {
-      //   response = await client.get(
-      //     Uri.parse(url),
-      //     headers: allHeaders,
-      //   );
-      // } finally {
-      //   client.close();
-      // }
       var response = await dio.post(
         "/api/admin/login",
         data: {"username": username, "password": password},
@@ -54,21 +28,6 @@ abstract class AuthServices {
       if (response.statusCode == 200) {
         final admin = Admin.fromJson(response.data);
         await StorageServices.setAdmin(admin);
-
-        // final cookie = document.cookie!;
-        // debugPrint("This is COOKIE : $cookie");
-        // final entity = cookie.split("; ").map((item) {
-        //   final split = item.split("=");
-        //   return MapEntry(split[0], split[1]);
-        // });
-        // final cookieMap = Map.fromEntries(entity);
-        // debugPrint("This is COOKIE : $cookieMap");
-        // debugPrint("This is COOKIE : ${cookieMap["jwt"]}");
-        debugPrint("This is COOKIE : ${response.headers["set-cookie"]}");
-        debugPrint(
-            "This is COOKIE : ${response.headers.map["content-length"]}");
-        debugPrint("This is COOKIE : ${response.headers["content-length"]}");
-
         var token = response.data["data"]["token"];
         await StorageServices.setToken('jwt-token', token);
 

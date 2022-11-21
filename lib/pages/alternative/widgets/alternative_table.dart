@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/constants/controller.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative_edit/alternative_edit_page.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/services/alternative_services.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/widgets/custom_text.dart';
@@ -109,23 +110,14 @@ class AlternativeTable extends StatelessWidget {
                                   ),
                                   TextButton(
                                     onPressed: () async {
-                                      await AlternativeServices.deleteTabungan(
-                                              id: data[index]["id"])
-                                          .then((_) =>
-                                                  Navigator.pop(context, 'OK')
-                                              //     Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) => const SuccessPage(
-                                              //         message:
-                                              //             "Berhasil menghapus data alternatif tabungan"),
-                                              //   ),
-                                              // ),
-                                              );
+                                      await alternativeController
+                                          .onDeleteAlternative(
+                                              data[index]["id"])
+                                          .then((_) {
+                                        Navigator.pop(context, 'OK');
+                                      });
                                     },
-                                    child: const Text(
-                                      'OK',
-                                    ),
+                                    child: const Text('OK'),
                                   ),
                                 ],
                               ),

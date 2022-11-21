@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/success/edit_success.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/services/alternative_services.dart';
 
+import 'drop_down_add_item.dart';
 import 'form_add_item.dart';
 
 class FormAdd extends StatefulWidget {
@@ -38,6 +39,18 @@ class _FormAddState extends State<FormAdd> {
     super.dispose();
   }
 
+  List<DropdownMenuItem> fungsionalitasMenu = const [
+    DropdownMenuItem(value: "BISNIS", child: Text("BISNIS")),
+    DropdownMenuItem(value: "INVESTASI", child: Text("INVESTASI")),
+    DropdownMenuItem(value: "TRANSAKSIONAL", child: Text("TRANSAKSIONAL")),
+  ];
+
+  List<DropdownMenuItem> kupMenu = const [
+    DropdownMenuItem(value: "DEWASA", child: Text("DEWASA")),
+    DropdownMenuItem(value: "REMAJA", child: Text("REMAJA")),
+    DropdownMenuItem(value: "ANAK-ANAK", child: Text("ANAK-ANAK")),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -73,15 +86,15 @@ class _FormAddState extends State<FormAdd> {
             controller: biayaPenarikanController,
             label: "Biaya Penarikan Habis",
           ),
-          FormAddItem(
-            controller: fungsionalitasController,
+          DropDownAddItem(
             label: "Fungsionalitas",
-            hint: "Bisnis / Investasi / Transaksional",
+            items: fungsionalitasMenu,
+            itemValue: fungsionalitasController,
           ),
-          FormAddItem(
-            controller: kupController,
+          DropDownAddItem(
             label: "Kategori Umur Pengguna",
-            hint: "Dewasa / Remaja / Anak-anak",
+            items: kupMenu,
+            itemValue: kupController,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),

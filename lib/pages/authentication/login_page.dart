@@ -107,28 +107,35 @@ class _LoginPageState extends State<LoginPage> {
                     InkWell(
                       onTap: () async {
                         if (_formLoginKey.currentState!.validate()) {
-                          await AuthServices.login(
-                            _username.text,
-                            _password.text,
-                          ).then((value) {
-                            if (value.code == 200) {
-                              authController.login();
-                              authController.setUsername =
-                                  value.data!.username ?? "Log In";
-                              Get.offAllNamed(rootRoute);
-                            } else {
-                              // Get.snackbar(
-                              //     "Error",
-                              //     value.message ??
-                              //         "Username atau Password salah",
-                              //     snackPosition: SnackPosition.BOTTOM);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Error : Username atau Password Salah')),
-                              );
-                            }
+                          await authController
+                              .login(_username.text, _password.text)
+                              .then((value) {
+                            authController.setUsername =
+                                value.data!.username ?? "admin";
+                            Get.offAllNamed(rootRoute);
                           });
+                          // await AuthServices.login(
+                          //   _username.text,
+                          //   _password.text,
+                          // ).then((value) {
+                          //   if (value.code == 200) {
+                          //     authController.login();
+                          //     authController.setUsername =
+                          //         value.data!.username ?? "Log In";
+                          //     Get.offAllNamed(rootRoute);
+                          //   } else {
+                          //     // Get.snackbar(
+                          //     //     "Error",
+                          //     //     value.message ??
+                          //     //         "Username atau Password salah",
+                          //     //     snackPosition: SnackPosition.BOTTOM);
+                          //     ScaffoldMessenger.of(context).showSnackBar(
+                          //       const SnackBar(
+                          //           content: Text(
+                          //               'Error : Username atau Password Salah')),
+                          //     );
+                          //   }
+                          // });
                         }
                       },
                       child: Container(

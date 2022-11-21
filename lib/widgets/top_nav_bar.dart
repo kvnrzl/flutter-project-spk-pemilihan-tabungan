@@ -80,10 +80,37 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
             InkWell(
               onTap: () async {
                 if (authController.isAuthenticated) {
-                  await AuthServices.logout().then((_) {
-                    Get.offAllNamed(rootRoute);
-                    authController.logout();
-                  });
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const CustomText(
+                        text: "Warning!",
+                        weight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                      content: const Text(
+                        'Do you want to logout?',
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(
+                            context,
+                            'Cancel',
+                          ),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await authController.logout().then((_) {
+                              Navigator.pop(context);
+                              authController.setUsername = "Log In";
+                            });
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
                 } else {
                   Get.offAllNamed(loginRoute);
                 }

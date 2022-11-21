@@ -7,6 +7,7 @@ import 'package:flutter_project_spk_pemilihan_tabungan/routing/routes.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'controllers/alternative_controller.dart';
 import 'controllers/menu_controller.dart';
 import 'controllers/navigation_controller.dart';
 
@@ -14,6 +15,7 @@ void main() {
   Get.put(MenuController());
   Get.put(NavigationController());
   Get.put(AuthController());
+  Get.put(AlternativeController());
   runApp(const MyApp());
 }
 
