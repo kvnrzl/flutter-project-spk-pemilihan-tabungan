@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/success/edit_success.dart';
+import 'package:get/get.dart';
+import '../../../constants/controller.dart';
 import '../../../models/input_recomendation.dart';
 import '../../../services/preset_services.dart';
 import '../../../services/recomendation_services.dart';
@@ -160,18 +162,19 @@ class _FormPresetState extends State<FormPreset> {
                     parseKategoriUmurPengguna;
 
                 if (totalBobot != 1) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Total bobot harus bernilai 1')),
+                  return Get.defaultDialog(
+                    title: "Peringatan",
+                    middleText: "Total bobot kriteria harus sama dengan 1",
+                    textConfirm: "Ya",
+                    confirmTextColor: Colors.white,
+                    buttonColor: Colors.blue,
+                    onConfirm: () {
+                      Get.back();
+                    },
                   );
-                  return;
                 }
 
                 if (_formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
-
                   PresetKriteria presetKriteria = PresetKriteria(
                     setoranAwal: parseSetoranAwal,
                     setoranLanjutanMinimal: parseSetoranLanjutanMinimal,
@@ -189,7 +192,15 @@ class _FormPresetState extends State<FormPreset> {
                   );
 
                   if (widget.isPreset) {
-                    await usedToSetBobot(presetKriteria);
+                    if (authController.isAuthenticated) {
+                      usedToSetBobot(presetKriteria);
+                    } else {
+                      Get.snackbar("Error",
+                          "Anda tidak memiliki akses untuk mengubah preset bobot kriteria",
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white);
+                    }
                   } else {
                     await usedToGetRecomendation(inputRecomendation);
                   }

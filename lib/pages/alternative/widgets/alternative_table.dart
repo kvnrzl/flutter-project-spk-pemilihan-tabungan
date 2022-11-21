@@ -4,6 +4,7 @@ import 'package:flutter_project_spk_pemilihan_tabungan/constants/controller.dart
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative_edit/alternative_edit_page.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/services/alternative_services.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/widgets/custom_text.dart';
+import 'package:get/get.dart';
 
 import '../../../models/tabungan.dart';
 import '../../alternative_detail/alternative_detail_page.dart';
@@ -66,16 +67,24 @@ class AlternativeTable extends StatelessWidget {
                           ),
                           IconButton(
                             onPressed: () async {
-                              await AlternativeServices.getTabunganById(
-                                      data[index]["id"])
-                                  .then((value) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            AlternativeEditPage(
-                                                tabungan: value)));
-                              });
+                              if (authController.isAuthenticated) {
+                                await AlternativeServices.getTabunganById(
+                                        data[index]["id"])
+                                    .then((value) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AlternativeEditPage(
+                                                  tabungan: value)));
+                                });
+                              } else {
+                                Get.snackbar("Error",
+                                    "Anda tidak memiliki akses untuk mengedit data",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white);
+                              }
                             },
                             icon: const Icon(
                               Icons.edit,
@@ -89,39 +98,82 @@ class AlternativeTable extends StatelessWidget {
                               color: Colors.red,
                             ),
                             tooltip: "Delete",
-                            onPressed: () => showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const CustomText(
-                                  text: "Warning!",
-                                  weight: FontWeight.bold,
-                                  color: Colors.red,
-                                ),
-                                content: const Text(
-                                  'Are you sure want to delete this?',
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(
-                                      context,
-                                      'Cancel',
-                                    ),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await alternativeController
-                                          .onDeleteAlternative(
-                                              data[index]["id"])
-                                          .then((_) {
-                                        Navigator.pop(context, 'OK');
-                                      });
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            onPressed: () {
+                              if (authController.isAuthenticated) {
+                                Get.defaultDialog(
+                                  title: "Konfirmasi",
+                                  middleText:
+                                      "Apakah anda yakin ingin menghapus data ini?",
+                                  textConfirm: "Ya",
+                                  textCancel: "Tidak",
+                                  confirmTextColor: Colors.white,
+                                  cancelTextColor: Colors.blue,
+                                  buttonColor: Colors.blue,
+                                  onCancel: () {
+                                    Get.back();
+                                  },
+                                  onConfirm: () async {
+                                    await alternativeController
+                                        .onDeleteAlternative(data[index]["id"])
+                                        .then((_) {
+                                      // if (value) {
+                                      Get.back();
+                                      Get.snackbar(
+                                          "Success", "Data berhasil dihapus",
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          backgroundColor: Colors.green,
+                                          colorText: Colors.white);
+                                      // } else {
+                                      //   Get.snackbar(
+                                      //       "Error", "Data gagal dihapus",
+                                      //       snackPosition: SnackPosition.BOTTOM,
+                                      //       backgroundColor: Colors.red,
+                                      //       colorText: Colors.white);
+                                      // }
+                                    });
+                                  },
+                                );
+                              } else {
+                                Get.snackbar("Error",
+                                    "Anda tidak memiliki akses untuk menghapus data",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white);
+                              }
+                              // showDialog<String>(
+                              //   context: context,
+                              //   builder: (BuildContext context) => AlertDialog(
+                              //     title: const CustomText(
+                              //       text: "Warning!",
+                              //       weight: FontWeight.bold,
+                              //       color: Colors.red,
+                              //     ),
+                              //     content: const Text(
+                              //       'Are you sure want to delete this?',
+                              //     ),
+                              //     actions: <Widget>[
+                              //       TextButton(
+                              //         onPressed: () => Navigator.pop(
+                              //           context,
+                              //           'Cancel',
+                              //         ),
+                              //         child: const Text('Cancel'),
+                              //       ),
+                              //       TextButton(
+                              //         onPressed: () async {
+                              //           await alternativeController
+                              //               .onDeleteAlternative(
+                              //                   data[index]["id"])
+                              //               .then((_) {
+                              //             Navigator.pop(context, 'OK');
+                              //           });
+                              //         },
+                              //         child: const Text('OK'),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // );
+                            },
                           ),
                         ],
                       ),

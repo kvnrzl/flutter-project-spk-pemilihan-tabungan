@@ -65,6 +65,16 @@ class SideMenu extends StatelessWidget {
                       // menuController
                       //     .changeActiveItemTo(overviewPageDisplayName);
                       // }
+                      if (item.route == presetPageRoute &&
+                          authController.isAuthenticated == false) {
+                        Get.snackbar("Error",
+                            "Anda tidak memiliki akses untuk mengubah preset bobot kriteria",
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white);
+                        return;
+                      }
+
                       if (!menuController.isActive(item.name)) {
                         menuController.changeActiveItemTo(item.name);
                         if (ResponsiveWidget.isSmallScreen(context)) Get.back();

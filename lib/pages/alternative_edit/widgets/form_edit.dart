@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/success/edit_success.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/services/alternative_services.dart';
+import 'package:get/get.dart';
 
+import '../../../constants/controller.dart';
 import '../../../models/tabungan.dart';
 import 'drop_down_edit_item.dart';
 import 'form_edit_item.dart';
@@ -118,11 +120,16 @@ class _FormEditState extends State<FormEdit> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
+                if (!authController.isAuthenticated) {
+                  Get.snackbar(
+                      "Error", "Anda tidak memiliki akses untuk mengedit data",
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white);
+                  return;
+                }
 
+                if (_formKey.currentState!.validate()) {
                   await AlternativeServices.updateTabungan(
                     id: widget.tabungan.data!.id!,
                     namaTabungan: namaTabunganController.text,

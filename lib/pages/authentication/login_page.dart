@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../constants/controller.dart';
 import '../../constants/style.dart';
 import '../../routing/routes.dart';
-import '../../services/auth_services.dart';
 import '../../widgets/custom_text.dart';
 
 class LoginPage extends StatefulWidget {
@@ -109,9 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                         if (_formLoginKey.currentState!.validate()) {
                           await authController
                               .login(_username.text, _password.text)
-                              .then((value) {
-                            authController.setUsername =
-                                value.data!.username ?? "admin";
+                              .then((_) {
                             Get.offAllNamed(rootRoute);
                           });
                           // await AuthServices.login(

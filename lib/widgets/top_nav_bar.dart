@@ -103,7 +103,6 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
                           onPressed: () async {
                             await authController.logout().then((_) {
                               Navigator.pop(context);
-                              authController.setUsername = "Log In";
                             });
                           },
                           child: const Text('OK'),
