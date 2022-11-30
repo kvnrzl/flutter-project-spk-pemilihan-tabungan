@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../constants/controller.dart';
 import '../../constants/style.dart';
+import '../../models/admin.dart';
 import '../../routing/routes.dart';
 import '../../widgets/custom_text.dart';
 
@@ -108,36 +109,23 @@ class _LoginPageState extends State<LoginPage> {
                         if (_formLoginKey.currentState!.validate()) {
                           await authController
                               .login(_username.text, _password.text)
-                              .then((_) {
-                            Get.offAllNamed(rootRoute);
+                              .then((value) {
+                            if (authController.isAuthenticated) {
+                              Get.offAllNamed(rootRoute);
+                              Get.snackbar(
+                                "Success",
+                                "Anda berhasil login",
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: Colors.green,
+                                colorText: Colors.white,
+                              );
+                            }
                           });
-                          // await AuthServices.login(
-                          //   _username.text,
-                          //   _password.text,
-                          // ).then((value) {
-                          //   if (value.code == 200) {
-                          //     authController.login();
-                          //     authController.setUsername =
-                          //         value.data!.username ?? "Log In";
-                          //     Get.offAllNamed(rootRoute);
-                          //   } else {
-                          //     // Get.snackbar(
-                          //     //     "Error",
-                          //     //     value.message ??
-                          //     //         "Username atau Password salah",
-                          //     //     snackPosition: SnackPosition.BOTTOM);
-                          //     ScaffoldMessenger.of(context).showSnackBar(
-                          //       const SnackBar(
-                          //           content: Text(
-                          //               'Error : Username atau Password Salah')),
-                          //     );
-                          //   }
-                          // });
                         }
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                            color: active,
+                            color: Colors.blue,
                             borderRadius: BorderRadius.circular(20)),
                         alignment: Alignment.center,
                         width: double.maxFinite,

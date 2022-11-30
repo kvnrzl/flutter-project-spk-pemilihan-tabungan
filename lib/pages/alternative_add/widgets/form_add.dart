@@ -41,6 +41,30 @@ class _FormAddState extends State<FormAdd> {
     super.dispose();
   }
 
+  newParseToInt(String source) {
+    var a = int.tryParse(source);
+    if (a is int) {
+      return a;
+    } else {
+      return Get.snackbar("Error", "Inputan tidak sesuai",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  newParseToDouble(String source) {
+    var a = double.tryParse(source);
+    if (a is double) {
+      return a;
+    } else {
+      return Get.snackbar("Error", "Inputan tidak sesuai",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
   List<DropdownMenuItem> fungsionalitasMenu = const [
     DropdownMenuItem(value: "BISNIS", child: Text("BISNIS")),
     DropdownMenuItem(value: "INVESTASI", child: Text("INVESTASI")),
@@ -98,44 +122,47 @@ class _FormAddState extends State<FormAdd> {
             items: kupMenu,
             itemValue: kupController,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                if (!authController.isAuthenticated) {
-                  Get.snackbar(
-                      "Error", "Anda tidak memiliki akses untuk menambah data",
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white);
-                  return;
-                }
-                if (_formKey.currentState!.validate()) {
-                  await AlternativeServices.createTabungan(
-                    namaTabungan: namaTabunganController.text,
-                    setoranAwal: int.parse(setoranAwalController.text),
-                    setoranLanjutanMinimal:
-                        int.parse(setoranLanjutanController.text),
-                    saldoMinimum: int.parse(saldoMinimumController.text),
-                    sukuBunga: double.parse(sukuBungaController.text),
-                    fungsionalitas: fungsionalitasController.text,
-                    biayaAdmin: int.parse(biayaAdminController.text),
-                    biayaPenarikanHabis:
-                        int.parse(biayaPenarikanController.text),
-                    kategoriUmurPengguna: kupController.text,
-                  ).then((_) {
-                    return Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SuccessPage(
-                            message:
-                                "Alternatif tabungan berhasil ditambahkan"),
-                      ),
-                    );
-                  });
-                }
-              },
-              child: const Text('Submit'),
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: ElevatedButton(
+                onPressed: () async {
+                  if (!authController.isAuthenticated) {
+                    Get.snackbar("Error",
+                        "Anda tidak memiliki akses untuk menambah data",
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white);
+                    return;
+                  }
+                  if (_formKey.currentState!.validate()) {
+                    await AlternativeServices.createTabungan(
+                      namaTabungan: namaTabunganController.text,
+                      setoranAwal: newParseToInt(setoranAwalController.text),
+                      setoranLanjutanMinimal:
+                          newParseToInt(setoranLanjutanController.text),
+                      saldoMinimum: newParseToInt(saldoMinimumController.text),
+                      sukuBunga: newParseToDouble(sukuBungaController.text),
+                      fungsionalitas: fungsionalitasController.text,
+                      biayaAdmin: newParseToInt(biayaAdminController.text),
+                      biayaPenarikanHabis:
+                          newParseToInt(biayaPenarikanController.text),
+                      kategoriUmurPengguna: kupController.text,
+                    ).then((_) {
+                      return Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SuccessPage(
+                              message:
+                                  "Alternatif tabungan berhasil ditambahkan."),
+                        ),
+                      );
+                    });
+                  }
+                },
+                child: const Text('Submit'),
+              ),
             ),
           ),
         ],

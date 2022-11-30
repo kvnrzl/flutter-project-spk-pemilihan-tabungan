@@ -46,6 +46,18 @@ class _FormPresetState extends State<FormPreset> {
     });
   }
 
+  newParseToDouble(String source) {
+    var a = double.tryParse(source);
+    if (a is double) {
+      return a;
+    } else {
+      return Get.snackbar("Error", "Inputan tidak sesuai",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -72,7 +84,7 @@ class _FormPresetState extends State<FormPreset> {
         context,
         MaterialPageRoute(
           builder: (context) => const SuccessPage(
-              message: "Preset bobot kriteria berhasil diupdate!"),
+              message: "Preset bobot kriteria berhasil diupdate."),
         ),
       );
     });
@@ -138,79 +150,85 @@ class _FormPresetState extends State<FormPreset> {
             controller: kupController,
             label: "Kategori Umur Pengguna",
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                var parseSetoranAwal = double.parse(setoranAwalController.text);
-                var parseSetoranLanjutanMinimal =
-                    double.parse(setoranLanjutanController.text);
-                var parseSaldoMinimum =
-                    double.parse(saldoMinimumController.text);
-                var parseSukuBunga = double.parse(sukuBungaController.text);
-                var parseFungsionalitas =
-                    double.parse(fungsionalitasController.text);
-                var parseBiayaAdmin = double.parse(biayaAdminController.text);
-                var parseBiayaPenarikanHabis =
-                    double.parse(biayaPenarikanController.text);
-                var parseKategoriUmurPengguna =
-                    double.parse(kupController.text);
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: ElevatedButton(
+                onPressed: () async {
+                  var parseSetoranAwal =
+                      newParseToDouble(setoranAwalController.text);
+                  var parseSetoranLanjutanMinimal =
+                      newParseToDouble(setoranLanjutanController.text);
+                  var parseSaldoMinimum =
+                      newParseToDouble(saldoMinimumController.text);
+                  var parseSukuBunga =
+                      newParseToDouble(sukuBungaController.text);
+                  var parseFungsionalitas =
+                      newParseToDouble(fungsionalitasController.text);
+                  var parseBiayaAdmin =
+                      newParseToDouble(biayaAdminController.text);
+                  var parseBiayaPenarikanHabis =
+                      newParseToDouble(biayaPenarikanController.text);
+                  var parseKategoriUmurPengguna =
+                      newParseToDouble(kupController.text);
 
-                var totalBobot = parseSetoranAwal +
-                    parseSetoranLanjutanMinimal +
-                    parseSaldoMinimum +
-                    parseSukuBunga +
-                    parseFungsionalitas +
-                    parseBiayaAdmin +
-                    parseBiayaPenarikanHabis +
-                    parseKategoriUmurPengguna;
+                  var totalBobot = parseSetoranAwal +
+                      parseSetoranLanjutanMinimal +
+                      parseSaldoMinimum +
+                      parseSukuBunga +
+                      parseFungsionalitas +
+                      parseBiayaAdmin +
+                      parseBiayaPenarikanHabis +
+                      parseKategoriUmurPengguna;
 
-                if (totalBobot != 1) {
-                  return Get.defaultDialog(
-                    title: "Peringatan",
-                    middleText: "Total bobot kriteria harus sama dengan 1",
-                    textConfirm: "Ya",
-                    confirmTextColor: Colors.white,
-                    buttonColor: Colors.blue,
-                    onConfirm: () {
-                      Get.back();
-                    },
-                  );
-                }
-
-                if (_formKey.currentState!.validate()) {
-                  PresetKriteria presetKriteria = PresetKriteria(
-                    setoranAwal: parseSetoranAwal,
-                    setoranLanjutanMinimal: parseSetoranLanjutanMinimal,
-                    saldoMinimum: parseSaldoMinimum,
-                    sukuBunga: parseSukuBunga,
-                    fungsionalitas: parseFungsionalitas,
-                    biayaAdmin: parseBiayaAdmin,
-                    biayaPenarikanHabis: parseBiayaPenarikanHabis,
-                    kategoriUmurPengguna: parseKategoriUmurPengguna,
-                  );
-
-                  InputRecomendation inputRecomendation = InputRecomendation(
-                    nilaiIdeal: widget.nilaiIdeal,
-                    presetKriteria: presetKriteria,
-                  );
-
-                  if (widget.isPreset) {
-                    if (!authController.isAuthenticated) {
-                      Get.snackbar("Error",
-                          "Anda tidak memiliki akses untuk mengubah preset bobot kriteria",
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white);
-                      return;
+                  if (_formKey.currentState!.validate()) {
+                    if (totalBobot != 1) {
+                      return Get.defaultDialog(
+                        title: "Peringatan",
+                        middleText: "Total bobot kriteria harus sama dengan 1",
+                        textConfirm: "Ya",
+                        confirmTextColor: Colors.white,
+                        buttonColor: Colors.blue,
+                        onConfirm: () {
+                          Get.back();
+                        },
+                      );
                     }
-                    usedToSetBobot(presetKriteria);
-                  } else {
-                    usedToGetRecomendation(inputRecomendation);
+
+                    PresetKriteria presetKriteria = PresetKriteria(
+                      setoranAwal: parseSetoranAwal,
+                      setoranLanjutanMinimal: parseSetoranLanjutanMinimal,
+                      saldoMinimum: parseSaldoMinimum,
+                      sukuBunga: parseSukuBunga,
+                      fungsionalitas: parseFungsionalitas,
+                      biayaAdmin: parseBiayaAdmin,
+                      biayaPenarikanHabis: parseBiayaPenarikanHabis,
+                      kategoriUmurPengguna: parseKategoriUmurPengguna,
+                    );
+
+                    InputRecomendation inputRecomendation = InputRecomendation(
+                      nilaiIdeal: widget.nilaiIdeal,
+                      presetKriteria: presetKriteria,
+                    );
+
+                    if (widget.isPreset) {
+                      if (!authController.isAuthenticated) {
+                        Get.snackbar("Error",
+                            "Anda tidak memiliki akses untuk mengubah preset bobot kriteria",
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white);
+                        return;
+                      }
+                      usedToSetBobot(presetKriteria);
+                    } else {
+                      usedToGetRecomendation(inputRecomendation);
+                    }
                   }
-                }
-              },
-              child: const Text('Submit'),
+                },
+                child: const Text('Submit'),
+              ),
             ),
           ),
         ],

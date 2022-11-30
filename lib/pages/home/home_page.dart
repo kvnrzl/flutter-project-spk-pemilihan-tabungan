@@ -5,21 +5,26 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Align(
-          alignment: Alignment.center,
-          child: Text(
-            "Sistem Pendukung Keputusan\nProduk Tabungan Bank BTN",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Align(
+            alignment: Alignment.center,
+            child: Text(
+              "Sistem Pendukung Keputusan\nProduk Tabungan Bank BTN",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        const SizedBox(height: 30),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 150),
+          const SizedBox(height: 30),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 50),
+            margin: const EdgeInsets.symmetric(horizontal: 150),
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(25),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
@@ -36,8 +41,8 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

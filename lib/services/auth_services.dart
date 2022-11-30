@@ -1,39 +1,31 @@
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import '../models/admin.dart';
+import '../models/error.dart';
 
 abstract class AuthServices {
-  static Future<Admin> login(String username, String password) async {
+  static Future<Either<Admin, ErrorResponse>> login(
+      String username, String password) async {
+    Response response;
     try {
-      final dio = Dio(BaseOptions(
-        baseUrl: "http://localhost:8080",
-        connectTimeout: 15000,
-        receiveTimeout: 13000,
-        headers: {
-          "Accept": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
-          "Access-Control-Allow-Methods":
-              "POST,HEAD,PATCH, OPTIONS, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "*",
-        },
-        // extra: {"withCredentials": true},
-      ));
-      var response = await dio.post(
+      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      response = await dio.post(
         "/api/admin/login",
         data: {"username": username, "password": password},
       );
 
       if (response.statusCode == 200) {
-        final admin = Admin.fromJson(response.data);
-        // var token = response.data["data"]["token"];
-        // await SharedPref.setString("jwt-token", token);
-
-        return admin;
+        return Left(Admin.fromJson(response.data));
       } else {
-        throw Exception("Login failed");
+        return Right(ErrorResponse.fromJson(response.data));
       }
     } catch (e) {
-      throw Exception(e.toString());
+      if (e is DioError) {
+        return Right(ErrorResponse.fromJson(e.response!.data));
+      } else {
+        throw Exception(e.toString());
+      }
     }
   }
 
@@ -54,3 +46,50 @@ abstract class AuthServices {
     }
   }
 }
+
+// class DioExceptions implements Exception {
+//   DioExceptions.fromDioError(DioError dioError) {
+//     switch (dioError.type) {
+//       case DioErrorType.CANCEL:
+//         message = "Request to API server was cancelled";
+//         break;
+//       case DioErrorType.CONNECT_TIMEOUT:
+//         message = "Connection timeout with API server";
+//         break;
+//       case DioErrorType.DEFAULT:
+//         message = "Connection to API server failed due to internet connection";
+//         break;
+//       case DioErrorType.RECEIVE_TIMEOUT:
+//         message = "Receive timeout in connection with API server";
+//         break;
+//       case DioErrorType.RESPONSE:
+//         message =
+//             _handleError(dioError.response.statusCode, dioError.response.data);
+//         break;
+//       case DioErrorType.SEND_TIMEOUT:
+//         message = "Send timeout in connection with API server";
+//         break;
+//       default:
+//         message = "Something went wrong";
+//         break;
+//     }
+//   }
+
+//   String message;
+
+//   String _handleError(int statusCode, dynamic error) {
+//     switch (statusCode) {
+//       case 400:
+//         return 'Bad request';
+//       case 404:
+//         return error["message"];
+//       case 500:
+//         return 'Internal server error';
+//       default:
+//         return 'Oops something went wrong';
+//     }
+//   }
+
+//   @override
+//   String toString() => message;
+// }

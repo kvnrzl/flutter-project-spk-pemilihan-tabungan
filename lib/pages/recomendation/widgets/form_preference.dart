@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/recomendation/widgets/drop_down_preference_item.dart';
+import 'package:get/get.dart';
 
 import '../../../models/input_recomendation.dart';
 import '../../preset/preset_page.dart';
@@ -29,6 +30,30 @@ class FormPreferenceState extends State<FormPreference> {
   final kupDewasaController = TextEditingController();
   final kupRemajaController = TextEditingController();
   final kupAnakController = TextEditingController();
+
+  newParseToInt(String source) {
+    var a = int.tryParse(source);
+    if (a is int) {
+      return a;
+    } else {
+      return Get.snackbar("Error", "Inputan tidak sesuai",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  newParseToDouble(String source) {
+    var a = double.tryParse(source);
+    if (a is double) {
+      return a;
+    } else {
+      return Get.snackbar("Error", "Inputan tidak sesuai",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
 
   @override
   void dispose() {
@@ -69,14 +94,18 @@ class FormPreferenceState extends State<FormPreference> {
           FormPreferenceItem(
             controller: sukuBungaController,
             label: "Suku Bunga",
+            hint:
+                "Isi dengan -1 jika ingin menggunakan kriteria bersifat benefit",
           ),
           FormPreferenceItem(
             controller: biayaAdminController,
             label: "Biaya Admin",
+            hint: "Isi dengan -1 jika ingin menggunakan kriteria bersifat cost",
           ),
           FormPreferenceItem(
             controller: biayaPenarikanController,
             label: "Biaya Penarikan Habis",
+            hint: "Isi dengan -1 jika ingin menggunakan kriteria bersifat cost",
           ),
           const SizedBox(height: 10),
           const Text("Fungsionalitas"),
@@ -106,56 +135,57 @@ class FormPreferenceState extends State<FormPreference> {
             controller: kupAnakController,
             label: "Anak-anak",
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   const SnackBar(content: Text('Processing Data')),
+                    // );
 
-                  Fungsionalitas fungsionalitas = Fungsionalitas(
-                    bisnis: int.tryParse(fungsiBisnisController.text) ?? 0,
-                    investasi:
-                        int.tryParse(fungsiInvestasiController.text) ?? 0,
-                    transaksional:
-                        int.tryParse(fungsiTransaksionalController.text) ?? 0,
-                  );
+                    Fungsionalitas fungsionalitas = Fungsionalitas(
+                      bisnis: newParseToInt(fungsiBisnisController.text),
+                      investasi: newParseToInt(fungsiInvestasiController.text),
+                      transaksional:
+                          newParseToInt(fungsiTransaksionalController.text),
+                    );
 
-                  KategoriUmurPengguna kategoriUmurPengguna =
-                      KategoriUmurPengguna(
-                    dewasa: int.tryParse(kupDewasaController.text) ?? 0,
-                    remaja: int.tryParse(kupRemajaController.text) ?? 0,
-                    anak: int.tryParse(kupAnakController.text) ?? 0,
-                  );
+                    KategoriUmurPengguna kategoriUmurPengguna =
+                        KategoriUmurPengguna(
+                      dewasa: newParseToInt(kupDewasaController.text),
+                      remaja: newParseToInt(kupRemajaController.text),
+                      anak: newParseToInt(kupAnakController.text),
+                    );
 
-                  NilaiIdeal nilaiIdeal = NilaiIdeal(
-                    setoranAwal: int.tryParse(setoranAwalController.text) ?? 0,
-                    setoranLanjutanMinimal:
-                        int.tryParse(setoranLanjutanController.text) ?? 0,
-                    saldoMinimum:
-                        int.tryParse(saldoMinimumController.text) ?? 0,
-                    sukuBunga: double.tryParse(sukuBungaController.text) ?? 0,
-                    biayaAdmin: int.tryParse(biayaAdminController.text) ?? 0,
-                    biayaPenarikanHabis:
-                        int.tryParse(biayaPenarikanController.text) ?? 0,
-                    fungsionalitas: fungsionalitas,
-                    kategoriUmurPengguna: kategoriUmurPengguna,
-                  );
+                    NilaiIdeal nilaiIdeal = NilaiIdeal(
+                      setoranAwal: newParseToInt(setoranAwalController.text),
+                      setoranLanjutanMinimal:
+                          newParseToInt(setoranLanjutanController.text),
+                      saldoMinimum: newParseToInt(saldoMinimumController.text),
+                      sukuBunga: newParseToDouble(sukuBungaController.text),
+                      biayaAdmin: newParseToInt(biayaAdminController.text),
+                      biayaPenarikanHabis:
+                          newParseToInt(biayaPenarikanController.text),
+                      fungsionalitas: fungsionalitas,
+                      kategoriUmurPengguna: kategoriUmurPengguna,
+                    );
 
-                  debugPrint(nilaiIdeal.toJson().toString());
+                    debugPrint(nilaiIdeal.toJson().toString());
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PresetPage(isPreset: false, nilaiIdeal: nilaiIdeal),
-                    ),
-                  );
-                }
-              },
-              child: const Text('Submit'),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PresetPage(isPreset: false, nilaiIdeal: nilaiIdeal),
+                      ),
+                    );
+                  }
+                },
+                child: const Text('Next'),
+              ),
             ),
           ),
         ],

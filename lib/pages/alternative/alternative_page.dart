@@ -4,8 +4,6 @@ import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative/widgets
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/alternative_add/alternative_add_page.dart';
 import 'package:get/get.dart';
 
-import '../../models/tabungan.dart';
-
 class AlternativePage extends StatefulWidget {
   const AlternativePage({super.key});
 

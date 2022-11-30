@@ -41,6 +41,30 @@ class _FormEditState extends State<FormEdit> {
     DropdownMenuItem(value: "ANAK-ANAK", child: Text("ANAK-ANAK")),
   ];
 
+  newParseToInt(String source) {
+    var a = int.tryParse(source);
+    if (a is int) {
+      return a;
+    } else {
+      return Get.snackbar("Error", "Inputan tidak sesuai",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  newParseToDouble(String source) {
+    var a = double.tryParse(source);
+    if (a is double) {
+      return a;
+    } else {
+      return Get.snackbar("Error", "Inputan tidak sesuai",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -116,45 +140,49 @@ class _FormEditState extends State<FormEdit> {
             items: kupMenu,
             itemValue: kupController,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                if (!authController.isAuthenticated) {
-                  Get.snackbar(
-                      "Error", "Anda tidak memiliki akses untuk mengedit data",
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white);
-                  return;
-                }
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: ElevatedButton(
+                onPressed: () async {
+                  if (!authController.isAuthenticated) {
+                    Get.snackbar("Error",
+                        "Anda tidak memiliki akses untuk mengedit data",
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white);
+                    return;
+                  }
 
-                if (_formKey.currentState!.validate()) {
-                  await AlternativeServices.updateTabungan(
-                    id: widget.tabungan.data!.id!,
-                    namaTabungan: namaTabunganController.text,
-                    setoranAwal: int.parse(setoranAwalController.text),
-                    setoranLanjutanMinimal:
-                        int.parse(setoranLanjutanController.text),
-                    saldoMinimum: int.parse(saldoMinimumController.text),
-                    sukuBunga: double.parse(sukuBungaController.text),
-                    fungsionalitas: fungsionalitasController.text,
-                    biayaAdmin: int.parse(biayaAdminController.text),
-                    biayaPenarikanHabis:
-                        int.parse(biayaPenarikanController.text),
-                    kategoriUmurPengguna: kupController.text,
-                  ).then((_) {
-                    return Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SuccessPage(
-                            message: "Alternatif tabungan berhasil diubah"),
-                      ),
-                    );
-                  });
-                }
-              },
-              child: const Text('Submit'),
+                  if (_formKey.currentState!.validate()) {
+                    await AlternativeServices.updateTabungan(
+                      id: widget.tabungan.data!.id!,
+                      namaTabungan: namaTabunganController.text,
+                      setoranAwal: newParseToInt(setoranAwalController.text),
+                      setoranLanjutanMinimal:
+                          newParseToInt(setoranLanjutanController.text),
+                      saldoMinimum: newParseToInt(saldoMinimumController.text),
+                      sukuBunga: newParseToDouble(sukuBungaController.text),
+                      fungsionalitas: fungsionalitasController.text,
+                      biayaAdmin: newParseToInt(biayaAdminController.text),
+                      biayaPenarikanHabis:
+                          newParseToInt(biayaPenarikanController.text),
+                      kategoriUmurPengguna: kupController.text,
+                    ).then((_) {
+                      return Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SuccessPage(
+                              message:
+                                  "Alternatif tabungan berhasil diupdate."),
+                        ),
+                      );
+                    });
+                  }
+                },
+                child: const Text('Submit'),
+              ),
             ),
           ),
         ],
