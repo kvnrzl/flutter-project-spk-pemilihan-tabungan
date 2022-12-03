@@ -19,7 +19,7 @@ class InputRecomendation {
       data['nilai_ideal'] = nilaiIdeal!.toJson();
     }
     if (presetKriteria != null) {
-      data['preset_kriteria'] = presetKriteria!.toJson();
+      data['bobot_kriteria'] = presetKriteria!.toJson();
     }
     return data;
   }

@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/service.dart';
 import '../models/tabungan.dart';
 
 abstract class AlternativeServices {
   static Future<ListTabungan> getAllTabungan() async {
     try {
       final dio = Dio(BaseOptions(
-        baseUrl: "http://localhost:8080",
+        baseUrl: baseUrl,
         connectTimeout: 15000,
         receiveTimeout: 13000,
         headers: {
@@ -43,7 +44,7 @@ abstract class AlternativeServices {
 
   static Future<Tabungan> getTabunganById(int id) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      final dio = Dio(BaseOptions(baseUrl: baseUrl));
       var response = await dio.get("/api/tabungan/detail/$id/");
       if (response.statusCode == 200) {
         return Tabungan.fromJson(response.data);
@@ -68,7 +69,7 @@ abstract class AlternativeServices {
     required String kategoriUmurPengguna,
   }) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      final dio = Dio(BaseOptions(baseUrl: baseUrl));
       // var adapter = BrowserHttpClientAdapter()..withCredentials = true;
       // dio.httpClientAdapter = adapter;
 
@@ -107,7 +108,7 @@ abstract class AlternativeServices {
     required String kategoriUmurPengguna,
   }) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      final dio = Dio(BaseOptions(baseUrl: baseUrl));
       var response = await dio.put("/api/tabungan/detail/$id/update", data: {
         "nama_tabungan": namaTabungan,
         "setoran_awal": setoranAwal,
@@ -132,7 +133,7 @@ abstract class AlternativeServices {
 
   static Future<void> deleteTabungan({required int id}) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      final dio = Dio(BaseOptions(baseUrl: baseUrl));
       // var adapter = BrowserHttpClientAdapter();
       // adapter.withCredentials = true;
       // dio.httpClientAdapter = adapter;

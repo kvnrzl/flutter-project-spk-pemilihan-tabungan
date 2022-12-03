@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/service.dart';
 import '../models/result.dart';
 import '../models/input_recomendation.dart';
 
@@ -9,7 +10,7 @@ abstract class RecomendationServices {
     required InputRecomendation inputRecomendation,
   }) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      final dio = Dio(BaseOptions(baseUrl: baseUrl));
       var response = await dio.post("/api/result/hitung",
           data: inputRecomendation.toJson());
       if (response.statusCode == 200) {

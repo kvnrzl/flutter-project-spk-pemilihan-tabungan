@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import '../constants/service.dart';
 import '../models/admin.dart';
 import '../models/error.dart';
 
@@ -9,7 +9,7 @@ abstract class AuthServices {
       String username, String password) async {
     Response response;
     try {
-      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      final dio = Dio(BaseOptions(baseUrl: baseUrl));
       response = await dio.post(
         "/api/admin/login",
         data: {"username": username, "password": password},
@@ -31,7 +31,7 @@ abstract class AuthServices {
 
   static Future<int> logout() async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+      final dio = Dio(BaseOptions(baseUrl: baseUrl));
       var response = await dio.post("/api/admin/logout");
       // await StorageServices.deleteToken("jwt-token");
       // await StorageServices.deleteToken("admin");

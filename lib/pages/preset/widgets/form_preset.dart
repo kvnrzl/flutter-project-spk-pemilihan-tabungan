@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/models/error.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/pages/success/edit_success.dart';
 import 'package:get/get.dart';
 import '../../../constants/controller.dart';
 import '../../../models/input_recomendation.dart';
+import '../../../models/preset_bobot.dart';
 import '../../../services/preset_services.dart';
 import '../../../services/recomendation_services.dart';
 import '../../result/result_page.dart';
@@ -29,7 +31,7 @@ class _FormPresetState extends State<FormPreset> {
   final fungsionalitasController = TextEditingController();
   final kupController = TextEditingController();
 
-  void getPresetBobot() async {
+  Future<void> getPresetBobot() async {
     await PresetServices.getPresetBobot().then((value) {
       setState(() {
         setoranAwalController.text = value.data!.setoranAwal.toString();
@@ -75,6 +77,19 @@ class _FormPresetState extends State<FormPreset> {
     fungsionalitasController.dispose();
     kupController.dispose();
     super.dispose();
+  }
+
+  Future<void> usedToCreateBobot(PresetKriteria presetKriteria) async {
+    await PresetServices.createPresetBobot(presetKriteria: presetKriteria)
+        .then((_) {
+      return Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SuccessPage(
+              message: "Preset bobot kriteria berhasil ditambahkan."),
+        ),
+      );
+    });
   }
 
   Future<void> usedToSetBobot(PresetKriteria presetKriteria) async {
@@ -221,9 +236,14 @@ class _FormPresetState extends State<FormPreset> {
                             colorText: Colors.white);
                         return;
                       }
-                      usedToSetBobot(presetKriteria);
+                      var response = await PresetServices.getPresetBobot();
+                      if (response is ErrorResponse) {
+                        await usedToCreateBobot(presetKriteria);
+                      } else {
+                        await usedToSetBobot(presetKriteria);
+                      }
                     } else {
-                      usedToGetRecomendation(inputRecomendation);
+                      await usedToGetRecomendation(inputRecomendation);
                     }
                   }
                 },

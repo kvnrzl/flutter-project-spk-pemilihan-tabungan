@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../constants/controller.dart';
 import '../../constants/style.dart';
-import '../../models/admin.dart';
 import '../../routing/routes.dart';
 import '../../widgets/custom_text.dart';
 

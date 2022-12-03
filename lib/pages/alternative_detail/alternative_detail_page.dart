@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/constants/style.dart';
-import 'package:get/get.dart';
-
 import '../../models/tabungan.dart';
 import 'widgets/new_custom_text_detail.dart';
 
