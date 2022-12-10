@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/constants/controller.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import '../constants/service.dart';
 import '../models/admin.dart';
 import '../models/error.dart';
@@ -10,6 +16,7 @@ abstract class AuthServices {
     Response response;
     try {
       final dio = Dio(BaseOptions(baseUrl: baseUrl));
+
       response = await dio.post(
         "/api/admin/login",
         data: {"username": username, "password": password},
@@ -32,15 +39,13 @@ abstract class AuthServices {
   static Future<int> logout() async {
     try {
       final dio = Dio(BaseOptions(baseUrl: baseUrl));
+
+      var token = await authController.getJwtToken;
+      dio.options.headers["Authorization"] = "Bearer $token";
+
       var response = await dio.post("/api/admin/logout");
-      // await StorageServices.deleteToken("jwt-token");
-      // await StorageServices.deleteToken("admin");
+
       return response.statusCode!;
-      // if (response.statusCode == 200) {
-      //   await SharedPref.remove("jwt-token");
-      // } else {
-      //   throw Exception("There is something error");
-      // }
     } catch (e) {
       throw Exception(e.toString());
     }

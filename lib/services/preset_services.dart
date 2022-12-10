@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/constants/service.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/models/error.dart';
 
+import '../constants/controller.dart';
 import '../models/input_recomendation.dart';
 import '../models/preset_bobot.dart';
 
@@ -29,6 +30,10 @@ abstract class PresetServices {
       {required PresetKriteria presetKriteria}) async {
     try {
       final dio = Dio(BaseOptions(baseUrl: baseUrl));
+
+      var token = await authController.getJwtToken;
+      dio.options.headers["Authorization"] = "Bearer $token";
+
       var response = await dio.post(
         "/api/preset/create",
         data: presetKriteria.toJson(),
@@ -48,6 +53,10 @@ abstract class PresetServices {
       {required PresetKriteria presetKriteria}) async {
     try {
       final dio = Dio(BaseOptions(baseUrl: baseUrl));
+
+      var token = await authController.getJwtToken;
+      dio.options.headers["Authorization"] = "Bearer $token";
+
       var response = await dio.put(
         "/api/preset/update",
         data: presetKriteria.toJson(),

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project_spk_pemilihan_tabungan/services/auth_services.dart';
+import 'package:flutter_project_spk_pemilihan_tabungan/services/storage_services.dart';
 import 'package:get/get.dart';
 
 import '../helpers/shared_preferences.dart';
@@ -12,7 +13,7 @@ class AuthController extends GetxController {
 
   final _isAuthenticated = false.obs;
   final _username = "Log In".obs;
-  final _jwtToken = "".obs;
+  // final _jwtToken = "".obs;
 
   // final int _loginTime = DateTime.now().millisecondsSinceEpoch;
 
@@ -40,8 +41,12 @@ class AuthController extends GetxController {
   String get getUsername => _username.value;
   set setUsername(String value) => _username.value = value;
 
-  String get getJwtToken => _jwtToken.value;
-  set setJwtToken(String value) => _jwtToken.value = value;
+  // String get getJwtToken => _jwtToken.value;
+  // set setJwtToken(String value) => _jwtToken.value = value;
+
+  Future<String> get getJwtToken async {
+    return await StorageServices.getToken("jwt-token");
+  }
 
   Future<Either<Admin, ErrorResponse>> login(
     String username,
@@ -51,11 +56,12 @@ class AuthController extends GetxController {
     result.fold(
       (admin) {
         setUsername = admin.data!.username!;
-        setJwtToken = admin.data!.token!;
+        // setJwtToken = admin.data!.token!;
         isAuthenticated = true;
         SharedPref.setBool("is-authenticated", true);
         SharedPref.setString("username", admin.data!.username!);
-        SharedPref.setString("jwt-token", admin.data!.token!);
+        // SharedPref.setString("jwt-token", admin.data!.token!);
+        StorageServices.setToken("jwt-token", admin.data!.token!);
       },
       (error) {
         Get.snackbar(
@@ -74,10 +80,11 @@ class AuthController extends GetxController {
     await AuthServices.logout().then((value) {
       isAuthenticated = false;
       setUsername = "Log In";
-      setJwtToken = "";
+      // setJwtToken = "";
       SharedPref.setBool("is-authenticated", false);
       SharedPref.setString("username", "Log In");
-      SharedPref.setString("jwt-token", "");
+      // SharedPref.setString("jwt-token", "");
+      StorageServices.setToken("jwt-token", "");
 
       // SharedPref.remove("login-time");
     });

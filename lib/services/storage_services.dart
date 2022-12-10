@@ -1,19 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import '../models/admin.dart';
 
 abstract class StorageServices {
   static const storage = FlutterSecureStorage();
 
-  static Future<void> setAdmin(Admin admin) async {
-    try {
-      await storage.write(key: 'admin', value: jsonEncode(admin.toJson()));
-    } catch (e) {
-      throw Exception(e.toString());
-    }
-  }
+  // static Future<void> setAdmin(Admin admin) async {
+  //   try {
+  //     await storage.write(key: 'admin', value: jsonEncode(admin.toJson()));
+  //   } catch (e) {
+  //     throw Exception(e.toString());
+  //   }
+  // }
 
   static Future<void> setToken(String key, String token) async {
     try {
